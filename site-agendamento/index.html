@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento Online</title>
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="192x192" href="icone-192.png">
+    <link rel="apple-touch-icon" href="icone-192.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <img src="logo-facmais.png" alt="Logo FACMAIS" id="logo">
+            <h1>Central de Agendamento</h1>
+            <p>Siga os passos para marcar seu horário de atendimento.</p>
+        </header>
+
+        <main>
+            <div class="form-step">
+                <h2>1. Escolha o Curso</h2>
+                <select id="seletor-curso">
+                    <option value="">-- Selecione o curso --</option>
+                    </select>
+            </div>
+
+            <div id="etapa-dia-semana" class="form-step hidden">
+                <h2>2. Escolha o Dia da Semana</h2>
+                <div id="dias-semana-disponiveis" class="botoes-grid">
+                    </div>
+            </div>
+            
+            <div id="etapa-horario" class="form-step hidden">
+                <h2>3. Escolha a Data e o Horário</h2>
+                <select id="seletor-data-especifica">
+                    </select>
+                <div id="horarios-disponiveis" class="botoes-grid">
+                    </div>
+            </div>
+
+            <div id="etapa-dados-pessoais" class="form-step hidden">
+                <h2>4. Seus Dados e Motivo</h2>
+                <input type="text" id="nome" placeholder="Seu nome completo">
+                <input type="email" id="email" placeholder="E-mail institucional">
+                <input type="tel" id="telefone" placeholder="Seu telefone (WhatsApp)">
+                <textarea id="motivo" placeholder="Descreva brevemente o motivo..." maxlength="40"></textarea>
+                <div id="contador-caracteres">40 caracteres restantes</div>
+            </div>
+
+            <button id="btn-agendar" class="hidden">Confirmar Agendamento</button>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

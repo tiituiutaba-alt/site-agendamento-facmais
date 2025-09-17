@@ -1,0 +1,137 @@
+/* Estilos Gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    /* COR ALTERADA: Texto principal agora é azul escuro */
+    color: #0D3D6A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 20px 0;
+}
+
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+#logo {
+    max-width: 120px;
+    margin-bottom: 15px;
+}
+
+h1 {
+    /* COR ALTERADA: Título principal agora é azul escuro */
+    color: #0D3D6A;
+    margin: 0;
+}
+
+h2 {
+    /* COR ALTERADA: Subtítulos agora são azul escuro */
+    color: #0D3D6A;
+    font-size: 1.2em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Classe para esconder elementos */
+.hidden {
+    display: none;
+}
+
+/* Estilos do Formulário */
+.form-step {
+    margin-bottom: 20px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; 
+    margin-bottom: 10px;
+    font-size: 1em;
+    background-color: #fff;
+    /* COR ALTERADA: Cor do texto dentro dos campos */
+    color: #0D3D6A;
+}
+
+input:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+#contador-caracteres {
+    text-align: right;
+    font-size: 0.8em;
+    color: #777;
+}
+
+/* Estilo para a grade de botões (dias e horários) */
+.botoes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Estilo para os botões individuais de dia e horário */
+.botao-selecao {
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    padding: 12px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 0.9em;
+    color: #333; /* Cor do texto dos botões não selecionados */
+}
+
+.botao-selecao:hover {
+    background-color: #dde4e6;
+}
+
+.botao-selecao.selecionado {
+    /* COR ALTERADA: Botão selecionado agora é vermelho */
+    background-color: #D92E28;
+    color: #fff;
+    border-color: #B8201C; /* Um tom de vermelho mais escuro para a borda */
+}
+
+/* Botão Principal */
+button {
+    width: 100%;
+    padding: 15px;
+    /* COR ALTERADA: Botão principal agora é azul escuro */
+    background-color: #0D3D6A;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    /* COR ALTERADA: Efeito de hover para um azul mais escuro */
+    background-color: #0A2E4F;
+}
