@@ -1,4 +1,4 @@
-// Local do arquivo: netlify/functions/agendar.js - VERSÃO COM FUSO HORÁRIO CORRIGIDO
+// Local do arquivo: netlify/functions/agendar.js - VERSÃO COM VERIFICAÇÃO DE CONFLITOS
 
 const { google } = require("googleapis");
 const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
@@ -23,34 +23,39 @@ exports.handler = async (event) => {
     const calendar = google.calendar({ version: "v3", auth: impersonatedAuth });
 
     const [hora, minuto] = horario.split(':');
-    
-    // ##### INÍCIO DA CORREÇÃO DE FUSO HORÁRIO #####
-    // Adicionamos "-03:00" para especificar que a hora é do fuso horário de Brasília (UTC-3)
     const dataISO = `${dataAgendamento}T${hora}:${minuto}:00-03:00`;
-    // ##### FIM DA CORREÇÃO DE FUSO HORÁRIO #####
-    
     const dataInicio = new Date(dataISO);
+    const dataFim = new Date(dataInicio.getTime() + 30 * 60 * 1000);
 
-    const dataFim = new Date(dataInicio.getTime() + 30 * 60 * 1000); 
+    // ##### INÍCIO DA NOVA VERIFICAÇÃO DE CONFLITOS #####
+    const checkResponse = await calendar.events.list({
+      calendarId: 'primary',
+      timeMin: dataInicio.toISOString(),
+      timeMax: dataFim.toISOString(),
+      maxResults: 1, // Só precisamos saber se existe pelo menos 1 evento
+      singleEvents: true,
+    });
+
+    if (checkResponse.data.items.length > 0) {
+      // Se a lista de eventos não estiver vazia, significa que o horário já está ocupado.
+      console.log('Conflito de agendamento detectado.');
+      return {
+        statusCode: 409, // 409 é o código para "Conflito"
+        body: JSON.stringify({ message: "Este horário já foi agendado." }),
+      };
+    }
+    // ##### FIM DA NOVA VERIFICAÇÃO DE CONFLITOS #####
 
     const evento = {
       summary: `Atendimento Aluno: ${nomeAluno} - ${cursoNome}`,
       description: `<b>Motivo do Agendamento:</b> ${motivo}\n\n<b>E-mail:</b> ${emailAluno}\n<b>Telefone:</b> ${telefoneAluno}`,
-      start: {
-        dateTime: dataInicio.toISOString(),
-        timeZone: "America/Sao_Paulo",
-      },
-      end: {
-        dateTime: dataFim.toISOString(),
-        timeZone: "America/Sao_Paulo",
-      },
+      start: { dateTime: dataInicio.toISOString(), timeZone: "America/Sao_Paulo" },
+      end: { dateTime: dataFim.toISOString(), timeZone: "America/Sao_Paulo" },
       attendees: [
-        { email: emailAluno, displayName: nomeAluno },
-        { email: coordenadorEmail }
+        { email: emailAluno, displayName: nomeAluno, responseStatus: 'accepted' },
+        { email: coordenadorEmail, responseStatus: 'accepted' }
       ],
-      reminders: {
-        useDefault: true,
-      },
+      reminders: { useDefault: true },
     };
 
     await calendar.events.insert({
