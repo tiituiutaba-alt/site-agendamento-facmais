@@ -1,3 +1,4 @@
+// ... (Todo o início do script.js permanece igual, desde document.addEventListener até a função resetarEtapas) ...
 document.addEventListener('DOMContentLoaded', function() {
 
     function gerarHorarios(inicio, fim, intervalo = 30) {
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const nomesDiasSemana = { 1: 'Segunda-feira', 2: 'Terça-feira', 3: 'Quarta-feira', 4: 'Quinta-feira', 5: 'Sexta-feira', 6: 'Sábado', 0: 'Domingo' };
     const seletorCurso = document.getElementById('seletor-curso');
     const etapaDiaSemana = document.getElementById('etapa-dia-semana');
-    const divDiasSemana = document.getElementById('dias-semana-disponiveis');
+    const divDiasSemana = document.getElementById('dias-semana-disponis');
     const etapaHorario = document.getElementById('etapa-horario');
     const seletorDataEspecifica = document.getElementById('seletor-data-especifica');
     const divHorarios = document.getElementById('horarios-disponiveis');
@@ -138,15 +139,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const telefone = document.getElementById('telefone').value;
         const motivo = motivoTextarea.value;
         
-        // ##### INÍCIO DA NOVA VALIDAÇÃO DE E-MAIL #####
         const dominioPermitido = "@facmais.edu.br";
-        
-        // Verifica se o e-mail digitado (em letras minúsculas) termina com o domínio permitido
         if (!email.toLowerCase().endsWith(dominioPermitido)) {
             alert(`Por favor, use um e-mail institucional.\nO e-mail deve terminar com "${dominioPermitido}".`);
-            return; // Para a execução do código aqui se o e-mail for inválido
+            return;
         }
-        // ##### FIM DA NOVA VALIDAÇÃO DE E-MAIL #####
 
         if (!coordenadorSelecionado || !data || !horarioSelecionado || !nome || !telefone || !motivo) {
             alert('Por favor, preencha todos os campos e selecione um horário.');
@@ -154,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         btnAgendar.disabled = true;
-        btnAgendar.textContent = "Agendando...";
+        btnAgendar.textContent = "Verificando...";
 
         const dadosParaAgendar = {
             dataAgendamento: data,
@@ -173,6 +170,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dadosParaAgendar)
             });
+
+            // ##### INÍCIO DA MUDANÇA PARA TRATAR O ERRO DE CONFLITO #####
+            if (response.status === 409) { // 409 = Conflito
+                alert("Desculpe, este horário acabou de ser agendado por outra pessoa. Por favor, recarregue a página e escolha um novo horário.");
+                window.location.reload();
+                return; // Para a execução
+            }
+            // ##### FIM DA MUDANÇA #####
 
             if (!response.ok) {
                 throw new Error('Houve uma falha na comunicação com o servidor.');
